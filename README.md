@@ -33,7 +33,7 @@
 1. **Clone atau download repository:**
 ```bash
 git clone https://github.com/iunoxid/piutangviz
-cd piutang_visualizer
+cd piutangviz
 ```
 
 2. **Buat virtual environment:**

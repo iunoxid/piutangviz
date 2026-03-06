@@ -104,11 +104,12 @@ THRESHOLDS = AgeThresholds()
 FUZZY = FuzzyConfig()
 
 # Mapping kolom Excel
+# NOTE: 'total' dihapus dari piutang karena sering jadi kolom terpisah dengan nilai berbeda
 COLUMN_MAPPING = {
     'nama_pelanggan': ['nama pelanggan', 'pelanggan', 'customer name', 'customer'],
     'no_faktur': ['no. faktur', 'no faktur', 'nomor faktur', 'invoice', 'invoice no'],
     'tgl_faktur': ['tgl. faktur', 'tgl faktur', 'tanggal faktur', 'invoice date', 'date'],
-    'piutang': ['piutang', 'total', 'amount', 'jumlah', 'nilai'],
+    'piutang': ['piutang', 'amount', 'jumlah', 'nilai'],
     'umur': ['umur', 'umur (hr)', 'age', 'days', 'hari']
 }
 

@@ -91,13 +91,52 @@ class ExcelReader:
         return None
     
     def _parse_number(self, value: str) -> float:
-        """Parse string ke float dengan membersihkan format"""
+        """Parse string ke float dengan membersihkan format
+        
+        Nilai negatif atau dalam kurung (xxx) dianggap kredit/lebih bayar,
+        return 0 karena bukan piutang.
+        """
         if not value or value == 'None':
             return 0.0
         
-        cleaned = str(value).replace(',', '').replace('Rp', '').replace(' ', '').replace('-', '')
+        val_str = str(value).strip()
+        
+        # Cek nilai negatif: diawali - atau diapit ()
+        # NOTE: Cek dulu SEBELUM hapus karakter - atau ()
+        is_negative = val_str.startswith('-') or (val_str.startswith('(') and val_str.endswith(')'))
+        
+        # Bersihkan format: hapus (), -, Rp, spasi
+        cleaned = val_str.replace('(', '').replace(')', '').replace('-', '').replace('Rp', '').replace('rp', '').replace(' ', '')
+        
+        # Handle format angka: 
+        # - Format US: 1,234.56 -> hapus koma, titik desimal
+        # - Format ID: 1.234,56 -> hapus titik, ganti koma jadi titik
+        if ',' in cleaned and '.' in cleaned:
+            # Ada koma dan titik, tentukan format
+            last_comma = cleaned.rfind(',')
+            last_dot = cleaned.rfind('.')
+            if last_comma > last_dot:
+                # Format ID: 1.234,56 -> hapus titik, ganti koma jadi titik
+                cleaned = cleaned.replace('.', '').replace(',', '.')
+            else:
+                # Format US: 1,234.56 -> hapus koma
+                cleaned = cleaned.replace(',', '')
+        elif ',' in cleaned:
+            # Cek apakah koma sebagai desimal atau ribuan
+            # Jika ada 3 digit setelah koma -> ribuan, hapus koma
+            # Jika tidak -> desimal, ganti jadi titik
+            parts = cleaned.split(',')
+            if len(parts) == 2 and len(parts[1]) == 3:
+                # Ribuan: 199,428 -> 199428
+                cleaned = cleaned.replace(',', '')
+            else:
+                # Desimal: 199,75 -> 199.75
+                cleaned = cleaned.replace(',', '.')
+        
         try:
-            return float(cleaned) if cleaned else 0.0
+            num = float(cleaned) if cleaned else 0.0
+            # Jika negatif, return 0 (bukan piutang)
+            return 0.0 if is_negative else num
         except ValueError:
             return 0.0
     
@@ -168,6 +207,11 @@ class ExcelReader:
                 # Parse dan format data
                 item['piutang'] = self._parse_number(item['piutang_raw'])
                 item['umur'] = self._parse_integer(item['umur_raw'])
+                
+                # Skip jika piutang <= 0 (bukan piutang, tapi kredit/lebih bayar)
+                if item['piutang'] <= 0:
+                    continue
+                
                 item['piutang_fmt'] = self._format_rupiah(item['piutang'])
                 item['tgl_faktur_fmt'] = self._format_date(item['tgl_faktur'])
                 

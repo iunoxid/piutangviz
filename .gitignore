@@ -159,10 +159,10 @@ cython_debug/
 # Output Files
 # ============================================
 
-# Generated images (uncomment jika ingin ignore)
-# *.png
-# *.jpg
-# *.jpeg
+# Generated images (output dari aplikasi)
+*.png
+*.jpg
+*.jpeg
 
 # Output reports
 *.pdf
@@ -224,3 +224,6 @@ Icon
 # Config lokal
 config.local.py
 settings.local.py
+
+*.png
+!sample_*.png

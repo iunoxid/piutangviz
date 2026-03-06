@@ -32,7 +32,7 @@
 
 1. **Clone atau download repository:**
 ```bash
-git clone <repo-url>
+git clone https://github.com/iunoxid/piutangviz
 cd piutang_visualizer
 ```
 

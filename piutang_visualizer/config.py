@@ -10,7 +10,7 @@ from typing import Tuple
 class Colors:
     """Konfigurasi warna"""
     # Warna status umur
-    MERAH: Tuple[int, int, int] = (255, 200, 200)      # >= 75 hari
+    MERAH: Tuple[int, int, int] = (255, 150, 150)      # >= 75 hari
     KUNING: Tuple[int, int, int] = (255, 255, 200)     # >= 60 hari
     HIJAU: Tuple[int, int, int] = (200, 255, 200)      # < 60 hari
     

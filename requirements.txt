@@ -1,0 +1,13 @@
+# Piutang Visualizer Requirements
+
+# Excel processing
+openpyxl>=3.0.0
+
+# Image generation
+Pillow>=9.0.0
+
+# Fuzzy string matching
+thefuzz>=0.19.0
+
+# Optimasi fuzzy matching (recommended)
+python-Levenshtein>=0.12.0

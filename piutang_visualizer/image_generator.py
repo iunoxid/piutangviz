@@ -56,7 +56,7 @@ class PiutangImageGenerator:
             return COLORS.MERAH
         elif umur >= 60:
             return COLORS.KUNING
-        return COLORS.HIJAU  # Hijau untuk yang < 60 hari
+        return COLORS.BG  # Putih/tanpa warna untuk yang < 60 hari
     
     def _get_status(self, umur: int) -> Tuple[str, Tuple[int, int, int]]:
         """Dapatkan status dan warna text berdasarkan umur"""
